@@ -7,6 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.testcrud.model.User
@@ -14,7 +15,7 @@ import com.example.testcrud.network.ApiService
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScreen(apiService: ApiService) {
+fun MainScreen(apiService: ApiService, currentUserName: String, onLogout: () -> Unit) {
     var users by remember { mutableStateOf(listOf<User>()) }
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -30,6 +31,25 @@ fun MainScreen(apiService: ApiService) {
     }
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        // Section Profil de l'utilisateur
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text("Bonjour, $currentUserName", modifier = Modifier.padding(8.dp))
+            Button(
+                onClick = {
+                    onLogout()
+                },
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text("Se déconnecter")
+            }
+        }
+
         // Form for adding/editing a user
         TextField(
             value = name,
